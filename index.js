@@ -8,9 +8,6 @@ require('dotenv').config()
 app.use(cors())
 app.use(express.json())
 
-// vQ6WH2PjGQkmXWMG
-// toyVerseDB
-
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.6ogtg9l.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -29,7 +26,33 @@ async function run() {
     await client.connect();
 
     const toyCollection = client.db('toyVerseDB').collection('toys')
+    const toyAddCollection = client.db('toyVersDB').collection('addToys')
 
+    // toys 
+    app.get('/toys/:text', async (req, res) => {
+      if (req.params.text == 'Animated character' || req.params.text == 'Disney_princess' || req.params.text == 'Frozen dolls') {
+
+        const result = await toyCollection.find({ subCategory: req.params.text }).toArray()
+        return res.send(result)
+      }
+      const result = await toyCollection.find({}).toArray()
+
+      res.send(result)
+    })
+
+    // addToys
+    app.post('/addToys', async (req, res)=>{
+      const addToys = req.body
+      const result = await toyAddCollection.insertOne(addToys)
+      res.send(result)
+    })
+
+    // myToys
+    app.get('/myToys/:email', async(req, res)=>{
+       console.log(req.params.email)
+       const result = await toyAddCollection.find({Seller_Email:req.params.email}).toArray()
+       res.send(result)
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -44,12 +67,12 @@ run().catch(console.dir);
 
 
 
-app.get('/', (req, res)=>{
-    res.send('my assignment eleven is doing good')
+app.get('/', (req, res) => {
+  res.send('my assignment eleven is doing good')
 })
 
-app.listen(port, ()=>{
-    console.log(`My toy verse is running On port : ${port}`)
+app.listen(port, () => {
+  console.log(`My toy verse is running On port : ${port}`)
 })
 
 
