@@ -47,12 +47,39 @@ async function run() {
       res.send(result)
     })
 
+    // search by toy name
+    const indexKeys = {Toy_Name:1, SubCategory:1}
+    const indexOption = {name: 'Toy_NameSubCategory'}
+    const result = await toyAddCollection.createIndex(indexKeys, indexOption)
+
+    app.get('/toySearchByName/:text', async(req, res)=>{
+      const searchText = req.params.text
+      console.log(searchText)
+      const result = await toyAddCollection.find({
+        $or:[
+          {Toy_Name: {$regex:searchText, $options: 'i'}},
+          {SubCategory: {$regex:searchText, $options: 'i'}}
+        ]
+       }).toArray()
+       res.send(result)
+    })
+
+    // all toys
+    app.get('/allToys', async(req,res)=>{
+      console.log(req.query)
+      const limit = parseInt(req.query.limit) || 20
+      const result = await toyAddCollection.find().limit(limit).toArray()
+      res.send(result)
+    })
+
     // myToys
     app.get('/myToys/:email', async(req, res)=>{
        console.log(req.params.email)
        const result = await toyAddCollection.find({Seller_Email:req.params.email}).toArray()
        res.send(result)
     })
+
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
