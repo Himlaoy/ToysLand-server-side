@@ -89,7 +89,6 @@ async function run() {
 
     // myToys
     app.get('/myToys/:email', async(req, res)=>{
-       console.log(req.params.email)
        const result = await toyAddCollection.find({Seller_Email:req.params.email}).toArray()
        res.send(result)
     })
@@ -105,7 +104,6 @@ async function run() {
 
     app.put('/update/:id', async(req, res)=>{
       const id = req.params.id
-      console.log(id)
       const filter = {_id: new ObjectId(id)}
       const updatedToy = req.body
       const option = {upsert : true}
