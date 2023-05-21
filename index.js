@@ -43,18 +43,15 @@ async function run() {
       const result = await toyCollection.find({}).toArray()
 
       res.send(result)
-      // console.log(result)
     })
 
      app.get('/toysDetail/:id', async(req, res)=>{
       const id = req.params.id
-      console.log(id)
       const query = {_id: new ObjectId(id)}
       const result = await toyCollection.findOne(query)
       res.send(result)
     })
 
-   
 
     // addToys
     app.post('/addToys', async (req, res)=>{
@@ -70,7 +67,6 @@ async function run() {
 
     app.get('/toySearchByName/:text', async(req, res)=>{
       const searchText = req.params.text
-      console.log(searchText)
       const result = await toyAddCollection.find({
         $or:[
           {Toy_Name: {$regex:searchText, $options: 'i'}},
@@ -82,7 +78,6 @@ async function run() {
 
     // all toys
     app.get('/allToys', async(req,res)=>{
-      console.log(req.query)
       const limit = parseInt(req.query.limit) || 20
       const result = await toyAddCollection.find().limit(limit).toArray()
       res.send(result)
@@ -100,7 +95,6 @@ async function run() {
       const query = {_id: new ObjectId(id)}
       const result = await toyAddCollection.findOne(query)
       res.send(result)
-      // console.log(result)
     })
 
     app.put('/update/:id', async(req, res)=>{
