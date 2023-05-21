@@ -26,7 +26,7 @@ async function run() {
     await client.connect();
 
     const toyCollection = client.db('toyVerseDB').collection('toys')
-    const toyAddCollection = client.db('toyVersDB').collection('addToys')
+    const toyAddCollection = client.db('toyVerseDB').collection('addToys')
 
 
 
@@ -46,12 +46,13 @@ async function run() {
       // console.log(result)
     })
 
-     // app.get('/Toys/:id', async(req, res)=>{
-    //   const id = req.params.id
-    //   const query = {_id: new ObjectId(id)}
-    //   const result = await toyCollection.findOne(query)
-    //   res.send(result)
-    // })
+     app.get('/toysDetail/:id', async(req, res)=>{
+      const id = req.params.id
+      console.log(id)
+      const query = {_id: new ObjectId(id)}
+      const result = await toyCollection.findOne(query)
+      res.send(result)
+    })
 
    
 
