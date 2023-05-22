@@ -64,6 +64,7 @@ async function run() {
 
 
     app.get('/toySearchByName/:text', async (req, res) => {
+      
       const indexKeys = { Toy_Name: 1, SubCategory: 1 }
       const indexOption = { name: 'Toy_NameSubCategory' }
       const ok = await toyAddCollection.createIndex(indexKeys, indexOption)
