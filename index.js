@@ -33,7 +33,7 @@ async function run() {
 
     // toys 
     app.get('/toys/:text', async (req, res) => {
-      if (req.params.text == 'Animated character' || req.params.text == 'Disney_princess' || req.params.text == 'Frozen dolls') {
+      if (req.params.text == 'Animated_character' || req.params.text == 'Disney_princess' || req.params.text == 'Frozen_dolls') {
 
         const result = await toyCollection.find({ subCategory: req.params.text }).toArray()
         return res.send(result)
